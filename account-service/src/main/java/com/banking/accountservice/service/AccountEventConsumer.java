@@ -46,7 +46,7 @@ public class AccountEventConsumer {
     public void consumeFraudDetected(@Payload Map<String,Object> payload){
 
         try{
-            String accountNumber = (String) payload.get("accountNumber");
+            String accountNumber = (String) payload.get("senderAccountNumber");
             log.info("Fraud detected, blocking the account {}",accountNumber);
             accountService.blockAccount(accountNumber);
         } catch (Exception e) {

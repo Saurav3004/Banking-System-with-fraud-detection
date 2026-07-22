@@ -25,7 +25,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.transfer(transferRequest));
     }
 
-    @GetMapping("/{transactionId")
+    @GetMapping("/{transactionId}")
     public ResponseEntity<TransactionResponse> getTransaction(@PathVariable String transactionId){
         return ResponseEntity.ok(transactionService.getTransaction(transactionId));
     }

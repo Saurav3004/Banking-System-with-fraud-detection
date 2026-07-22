@@ -24,7 +24,7 @@ public class AccountService {
     public AccountResponse createAccount(CreateAccountRequest createAccountRequest){
         log.info("Creating account for: {}",createAccountRequest.getEmail());
 
-        if(accountRepository.existByEmail(createAccountRequest.getEmail())){
+        if(accountRepository.existsByEmail(createAccountRequest.getEmail())){
             throw new RuntimeException("Account already exists for email: " + createAccountRequest.getEmail());
         }
 

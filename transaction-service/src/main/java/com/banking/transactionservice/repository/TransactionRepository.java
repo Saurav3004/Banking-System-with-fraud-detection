@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction,String> {
 
-    List<Transaction> findBySenderAccountNumberOrderByCreatedDesc(String accountNumber);
+    List<Transaction> findBySenderAccountNumberOrderByCreatedAtDesc(String accountNumber);
 }
