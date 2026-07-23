@@ -65,6 +65,7 @@ public class TransactionEventConsumer {
             otpEvent.setReason(reason);
             otpEvent.setOtp(otp);
 
+            // This event consumed by notification service
             kafkaTemplate.send(TRANSACTION_OTP_GENERATED_TOPIC,transactionId,otpEvent);
 
         } catch (Exception e) {

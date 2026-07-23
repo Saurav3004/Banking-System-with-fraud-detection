@@ -77,6 +77,7 @@ public class TransactionService {
                 transactionSaved.getDescription()
         );
 
+        // This event consumed by fraud-detection-service
         kafkaTemplate.send(TRANSACTION_INITIATED_TOPIC,transactionSaved.getId(),event);
         log.info("SAGA Step - 2 TransactionInitiated event published: {}",transactionSaved.getId());
 
@@ -150,6 +151,7 @@ public class TransactionService {
         refundEvent.setAmount(transaction.getAmount());
         refundEvent.setReason(transaction.getFailureReason());
 
+        // This event consumed by notification service
         kafkaTemplate.send(TRANSACTION_REFUNDED_TOPIC,transaction.getId(),refundEvent);
 
         log.info("SAGA compensation complete {} refunded to {}",transaction.getAmount(),
@@ -163,6 +165,7 @@ public class TransactionService {
         fraudEvent.setSenderAccountNumber(transaction.getSenderAccountNumber());
         fraudEvent.setReason(reason);
 
+        // This event consumed by notification service and account service
         kafkaTemplate.send(FRAUD_DETECTED_TOPIC,transaction.getId(),fraudEvent);
 
         log.warn("Fraud detected published - account: {} will be blocked, Kindly contact to your bank",
@@ -184,6 +187,7 @@ public class TransactionService {
         transactionCompletedEvent.setAmount(transaction.getAmount());
         transactionCompletedEvent.setDescription(transaction.getDescription());
 
+        // This event consumed by notification and account service
         kafkaTemplate.send(TRANSACTION_COMPLETED_TOPIC,transaction.getId(),transactionCompletedEvent);
 
         log.info("SAGA completed - Transaction: {} completed",transaction.getId());

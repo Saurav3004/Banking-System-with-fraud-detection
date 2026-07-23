@@ -68,6 +68,7 @@ public class FraudDetectionService {
             verificationEvent.setAmount(amount);
             verificationEvent.setReason(result.getReason());
 
+            // This event consumed by transaction service
             kafkaTemplate.send(VERIFICATION_REQUIRED_TOPIC,transactionId,verificationEvent);
         }else{
             // Transaction is clean
@@ -77,6 +78,7 @@ public class FraudDetectionService {
             transactionCleanEvent.setFraud(false);
             transactionCleanEvent.setReason(null);
 
+            // This event consumed by transaction service
             kafkaTemplate.send(FRAUD_CHECK_CLEAN_RESULT,transactionId,transactionCleanEvent);
         }
     }

@@ -122,6 +122,8 @@ public class PaymentService {
             event.put("amount",payment.getAmount());
             event.put("razorpayPaymentId",paymentId);
 
+            // This event consumed by notification service and should be consumed by account service to credit in
+            // receiver account
             kafkaTemplate.send(PAYMENT_COMPLETED_TOPIC,payment.getId(),event);
             log.info("Payment completed: {}",payment.getId());
 
@@ -142,12 +144,14 @@ public class PaymentService {
             payment.setFailureReason("Payment failed via Razorpay");
             paymentRepository.save(payment);
 
-            // Publish payment completed event
+
             Map<String,Object> event = new HashMap<>();
             event.put("paymentId",payment.getId());
             event.put("accountNumber",payment.getAccountNumber());
             event.put("amount",payment.getAmount());
             event.put("reason","Payment failed via Razorpay");
+
+            // This event consumed by notification service
             kafkaTemplate.send(PAYMENT_FAILED_TOPIC,payment.getId(),event);
 
             log.warn("Payment failed: {}",payment.getId());
